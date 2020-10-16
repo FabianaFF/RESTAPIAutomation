@@ -1,0 +1,27 @@
+### Eclipse ###
+.project
+.classpath
+.lauch
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+*.settings
+.loadpath
+
+### Java ###
+.class
+
+# Log file
+*.log
+
+## Mavem ##
+/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionBackup
+pom.xml.next

@@ -1,0 +1,34 @@
+empregadoDTO:
+  admissao: "10/10/2020"
+  cargo: "Analista"
+  comissao: "00,00"
+  cpf: "000.000.000-10"
+  departamentoId: 1
+  nome: "Fake user"
+  salario: "5.000,00"
+  sexo: "m"
+  tipoContratacao: "clt"
+
+# Inavlid departamentoId reference
+empregadoDTO2:
+  admissao: "10/10/2020"
+  cargo: "Analista"
+  comissao: "00,00"
+  cpf: "000.000.000-20"
+  departamentoId: 1012
+  nome: "Fake user 2"
+  salario: "5.005,00"
+  sexo: "f"
+  tipoContratacao: "pj"
+
+# Inavlid tipoContratacao value (possible values: 'clt' or 'pj')
+empregadoDTO3:
+  admissao: "10/10/2020"
+  cargo: "Analista"
+  comissao: "00,00"
+  cpf: "000.000.000-20"
+  departamentoId: 1012
+  nome: "Fake user 3"
+  salario: "5.005,00"
+  sexo: "f"
+  tipoContratacao: "Temporaria"
