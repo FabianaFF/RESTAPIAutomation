@@ -26,9 +26,17 @@ public class ConfigManager {
 		 String admUser = YamlHelper.getInstance().convertYamlToNode(configPath,"admUser").asText();
 		 String admPass = YamlHelper.getInstance().convertYamlToNode(configPath,"admPass").asText();
 		 String urlBase = YamlHelper.getInstance().convertYamlToNode(configPath,"urlBase").asText();		 
+		 String webBase = YamlHelper.getInstance().convertYamlToNode(configPath,"webBase").asText();
+		 String chromeDriverPath = YamlHelper.getInstance().convertYamlToNode(configPath,"chromeDriverPath").asText();
+		 String defaultDriver = YamlHelper.getInstance().convertYamlToNode(configPath,"defaultDriver").asText();
+		 
 		 configs.put("admUser", admUser);
 		 configs.put("admPass", admPass);
-		 configs.put("urlBase", urlBase);		 
+		 configs.put("urlBase", urlBase);
+		 configs.put("webBase", webBase);
+		 configs.put("chromeDriverPath", chromeDriverPath);
+		 configs.put("defaultDriver", defaultDriver);
+		 
 		 RestAssured.baseURI = urlBase;
 		 System.out.println("Configurações setadas");
 	}

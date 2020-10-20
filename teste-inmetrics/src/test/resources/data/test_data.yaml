@@ -32,3 +32,8 @@ empregadoDTO3:
   salario: "5.005,00"
   sexo: "f"
   tipoContratacao: "Temporaria"
+
+# login DTO
+loginDTO:
+  email: "@email.com"
+  pasword: "fakePass"

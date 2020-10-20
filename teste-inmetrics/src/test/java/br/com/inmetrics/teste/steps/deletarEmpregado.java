@@ -2,6 +2,8 @@ package br.com.inmetrics.teste.steps;
 
 import java.util.ArrayList;
 
+import org.junit.Assert;
+
 import br.com.inmetrics.teste.support.ConfigManager;
 import br.com.inmetrics.teste.support.CustomLogFilter;
 import cucumber.api.Scenario;
@@ -38,7 +40,7 @@ public class deletarEmpregado {
 		resultCodes.add(new Integer(expectedResponseCode1));
 		resultCodes.add(new Integer(expectedResponseCode2));
 		
-		//Assert.assertTrue(resultCodes.contains(new Integer(response.getStatusCode())));
+		Assert.assertTrue(resultCodes.contains(new Integer(response.getStatusCode())));
 	}
 	
 	@Given("^Como usuário cadastrado com permissão de Deleção de empregados$")

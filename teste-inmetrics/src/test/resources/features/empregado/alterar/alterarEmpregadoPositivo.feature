@@ -7,7 +7,7 @@ Scenario Outline: Alterar empregado cadastrado
 	And usando o id de um empregado que possa ser alterado
 	And enviando o valor '<valor>' para o campo '<campo>'
 	When ao enviar o PUT request para a API 
-	Then verifico que o responseCode recebido pelo PUT request é '201'
+	Then verifico que o responseCode recebido pelo PUT request é '202'
 	And verifico que o campo '<campo>' atualizado para '<valor>'
 	
 	Examples:
