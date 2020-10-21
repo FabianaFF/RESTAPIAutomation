@@ -1,7 +1,7 @@
-Feature: Cadastro de novo usuario
+Feature: Cadastro de novo usuario pelo site
 
-@CadastrarLogin
-Scenario: Cadastrar usuário pela interface web 
+@CadastrarLoginFE
+Scenario: Cadastrar novo Login pela interface web 
 	Given Como usuário web não cadastrado
 	When ao enviar todos os dados para cadastrar novo acesso
 	Then quero ter meu cadastro realizado com sucesso 

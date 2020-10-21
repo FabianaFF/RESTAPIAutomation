@@ -19,6 +19,9 @@ local.properties
 # Log file
 *.log
 
+# evidences #
+*.png
+
 ## Mavem ##
 /target/
 pom.xml.tag

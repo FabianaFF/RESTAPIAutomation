@@ -32,8 +32,8 @@ public class Login {
 	@CacheLookup
 	WebElement novoCadastro;
 	 
-	public void doLogin(String use, String pass) {
-		username.sendKeys(use);	
+	public void doLogin(String user, String pass) {
+		username.sendKeys(user);	
 		password.sendKeys(pass);		
 		login.click();
 	}
