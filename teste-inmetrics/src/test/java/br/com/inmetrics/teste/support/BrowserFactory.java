@@ -11,7 +11,7 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 
 public class BrowserFactory {
 	private static WebDriver driver;
-	public static BrowserFactory instance;
+	private static BrowserFactory instance;
 	
 	private BrowserFactory(){
 	}
@@ -24,8 +24,10 @@ public class BrowserFactory {
 	}
 	 
 	
-	public static WebDriver getChromeDriver(){
+	public WebDriver getChromeDriver(){
 		if(driver==null){
+			System.setProperty("webdriver.chrome.driver", ConfigManager.getInstance().getConfigs().get("chromeDriverPath"));
+			
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--disable-notifications");
 			options.addArguments("start-maximized"); 
@@ -35,29 +37,29 @@ public class BrowserFactory {
 			options.addArguments("--disable-dev-shm-usage");
 			options.addArguments("--disable-browser-side-navigation"); 
 			options.addArguments("--disable-gpu"); 
-			options.setPageLoadStrategy(PageLoadStrategy.NONE);
-			System.setProperty("webdriver.chrome.driver", ConfigManager.getInstance().getConfigs().get("chromeDriverPath"));
-			driver = new ChromeDriver(options); 
+			options.setPageLoadStrategy(PageLoadStrategy.NONE);			
 			
+			driver = new ChromeDriver(options);			
 			driver.manage().window().maximize();
 			driver.manage().deleteAllCookies();
 			driver.manage().timeouts().implicitlyWait(45, TimeUnit.SECONDS);
 			driver.manage().timeouts().pageLoadTimeout(45, TimeUnit.SECONDS);
+			
 		}
 		return driver;
 	}
 	 
-	public static WebDriver getIEDriver(){
+	public  WebDriver getIEDriver(){
 		//implements specific setup of IE
 		return new InternetExplorerDriver();
 	}
 	
-	public static WebDriver getFirefoxDriver(){
+	public  WebDriver getFirefoxDriver(){
 		//implements specific setup of firefox
 		return new FirefoxDriver();
 	}
 	
-	public static WebDriver getDriver(String browserName){
+	public  WebDriver getDriver(String browserName){
 		if(driver==null){
 			
 			if(browserName.equalsIgnoreCase("firefox"))

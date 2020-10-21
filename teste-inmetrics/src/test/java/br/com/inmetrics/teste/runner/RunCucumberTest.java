@@ -26,7 +26,7 @@ public class RunCucumberTest {
 
 	@AfterClass
     public static void tearDown() throws JsonProcessingException, IOException {
-		System.out.println("Finishing tests...");
+		System.out.println("Finishing tests...");		
     }
 
 }

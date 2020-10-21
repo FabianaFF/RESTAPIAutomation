@@ -11,7 +11,6 @@ import br.com.inmetrics.teste.PageObjects.CadastroNovoLogin;
 import br.com.inmetrics.teste.PageObjects.Login;
 import br.com.inmetrics.teste.support.BrowserFactory;
 import br.com.inmetrics.teste.support.ConfigManager;
-import br.com.inmetrics.teste.support.EvidencesHelper;
 import br.com.inmetrics.teste.support.YamlHelper;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
@@ -21,14 +20,13 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import junit.framework.Assert;
 
-public class CadastrarLogin {
-	
+public class RealizarLogin {
 	static String testData = "src/test/resources/data/test_data.yaml";
 	private Scenario scenario;
 	private WebDriver driver;
 	private CadastroNovoLogin novoLoginPage;
 	private String pass;	
-	private String randomUser;
+	private String user;
 
 	@Before()
 	public void before(Scenario scenario) {
@@ -37,26 +35,20 @@ public class CadastrarLogin {
 		configureData();		
 	}
 	
-	@Given("^Como usuário web não cadastrado$")
-	public void acessarOpcaoCadastrate() {
+	@Given("^Como usuário web cadastrado$")
+	public void acessarTelaLogin() {
 		driver.get(ConfigManager.getInstance().getConfigs().get("webBase"));
-		
-		//Redirecidonando a tela de novo login
-		Login loginPage = PageFactory.initElements(driver, Login.class);
-		loginPage.doNovoCadastro();
-		Assert.assertEquals(driver.getCurrentUrl(), "http://www.inmrobo.tk/accounts/signup/");
 	}
 	
-	@When("^ao enviar todos os dados para cadastrar novo acesso$")
-	public void preencheDadosCadstroNovoAcesso() {		
-		novoLoginPage = PageFactory.initElements(driver, CadastroNovoLogin.class);
-		novoLoginPage.doRegister(randomUser, pass, pass);		
+	@When("^ao enviar todos os dados para acessar sistema$")
+	public void realizarLogin() {
+		Login loginPage = PageFactory.initElements(driver, Login.class);
+		loginPage.doLogin(user, pass);
 	}
-			
-	@Then("^quero ter meu cadastro realizado com sucesso$")
-	public void validarCadastro() {
-		//Apos cadastro é realizado o redirecionamento a tela de login
-		Assert.assertEquals(driver.getCurrentUrl(), "http://www.inmrobo.tk/accounts/login/");		
+	
+	@Then("^quero ter meu login realizado com sucesso$")
+	public void validaAcesso() {
+		Assert.assertEquals(driver.getCurrentUrl(), "http://www.inmrobo.tk/empregados/");		
 	}
 	
 	@After
@@ -72,8 +64,7 @@ public class CadastrarLogin {
 	private void configureData() {
 		JsonNode newLoginInfo = YamlHelper.getInstance().convertYamlToNode(testData, "loginDTO");
 		Long random = System.currentTimeMillis();
-		randomUser = new String("U" + random).substring(0, 8);
-		pass = newLoginInfo.get("pasword").toString();
+		user = newLoginInfo.get("email").asText();
+		pass = newLoginInfo.get("pasword").asText();
 	}
-	
 }

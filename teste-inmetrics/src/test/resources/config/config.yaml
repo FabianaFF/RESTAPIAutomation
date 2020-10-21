@@ -2,5 +2,5 @@ urlBase: http://inm-api-test.herokuapp.com/
 admUser: inmetrics
 admPass: automacao
 webBase: http://www.inmrobo.tk/accounts/login/
-chromeDriverPath: C:\\qafullstack\\libs\\chromedriver_win32\\chromedriver.exe
+chromeDriverPath: C:\\qafullstack\\libs\\chrome86\\chromedriver.exe
 defaultDriver: chrome

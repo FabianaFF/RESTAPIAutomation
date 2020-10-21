@@ -21,7 +21,7 @@ public class EvidencesHelper {
 			return instance;
 		}
 		 
-		public static void getScreenShot(WebDriver driver, String filepath) {
+		public static void saveScreenShot(WebDriver driver, String filepath) {
 			try 
 			{
 				System.out.println("FilePath: " + filepath);
