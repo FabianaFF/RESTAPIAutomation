@@ -38,12 +38,12 @@ public class AlterarEmpregadoFE {
 	public void before(Scenario scenario) {
 		this.scenario = scenario;
 		this.driver = BrowserFactory.getInstance().getDriver(ConfigManager.getInstance().getConfigs().get("defaultDriver"));
+		this.driver.get(ConfigManager.getInstance().getConfigs().get("webBase"));
 		configureData();
 	}
 	
 	@Given("^Como usuário web cadastrado e logado com permissão de alteração$")
-	public void realizaAcesso() {
-		this.driver.get(ConfigManager.getInstance().getConfigs().get("webBase"));
+	public void realizaAcesso() {		
 		Login loginPage =  PageFactory.initElements(this.driver, Login.class);
 		loginPage.doLogin(user, pass);	
 	}
@@ -73,8 +73,8 @@ public class AlterarEmpregadoFE {
 		//Salvando screenshot no report
 		byte[] image = ((TakesScreenshot)this.driver).getScreenshotAs(OutputType.BYTES);
 		this.scenario.embed(image, "image/png");
-		
-		this.driver.close();
+
+		driver.quit();
 	}
 	
 	private void configureData() {

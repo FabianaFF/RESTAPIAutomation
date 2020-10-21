@@ -57,7 +57,6 @@ public class RealizarLogin {
 		//Salvando screenshot no report
 		byte[] image = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
 		this.scenario.embed(image, "image/png");
-		
 		driver.quit();
 	}
 	

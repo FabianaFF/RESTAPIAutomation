@@ -79,7 +79,7 @@ public class CadastrarEmpregadoFE {
 		byte[] image = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
 		this.scenario.embed(image, "image/png");
 		
-		driver.close();
+		driver.quit();
 	}
 	
 	private void configureData() {
