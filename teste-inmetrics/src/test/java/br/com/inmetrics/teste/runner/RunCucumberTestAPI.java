@@ -13,7 +13,7 @@ import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features="src/test/resources/features/API", 
+@CucumberOptions(features="src/test/resources/features/API/empregado/alterar", 
 glue="br/com/inmetrics/teste/steps/API", 
 monochrome = true, plugin={"pretty", "json:target/cucumber.json"})
 public class RunCucumberTestAPI {

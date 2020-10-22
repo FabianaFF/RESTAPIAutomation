@@ -91,17 +91,17 @@ public class alterarEmpregado {
 	public void configurePayload() {
 		payloadMap = new HashMap<>();
 		
-		payloadMap.put("acesso", listEmpregados.get("acesso").toString());
-		payloadMap.put("admissao", listEmpregados.get("admissao").toString());
-		payloadMap.put("cargo", listEmpregados.get("cargo").toString());
-		payloadMap.put("comissao", listEmpregados.get("comissao").toString());
+		payloadMap.put("acesso", (String) listEmpregados.get("acesso"));
+		payloadMap.put("admissao", (String) listEmpregados.get("admissao"));
+		payloadMap.put("cargo", (String) listEmpregados.get("cargo"));
+		payloadMap.put("comissao", (String) listEmpregados.get("comissao"));
 		payloadMap.put("cpf", listEmpregados.get("cpf").toString());
 		payloadMap.put("departamentoId", 1);
 		payloadMap.put("empregadoId", new Integer(listEmpregados.get("empregadoId").toString()).intValue());
-		payloadMap.put("nome", listEmpregados.get("nome").toString());
-		payloadMap.put("salario", listEmpregados.get("salario").toString());
-		payloadMap.put("sexo", listEmpregados.get("sexo").toString());
-		payloadMap.put("tipoContratacao", listEmpregados.get("tipoContratacao").toString());
+		payloadMap.put("nome", (String) listEmpregados.get("nome"));
+		payloadMap.put("salario", (String) listEmpregados.get("salario"));
+		payloadMap.put("sexo", (String) listEmpregados.get("sexo"));
+		payloadMap.put("tipoContratacao", (String) listEmpregados.get("tipoContratacao"));
 	}
 	
 	public void configureRequest() {

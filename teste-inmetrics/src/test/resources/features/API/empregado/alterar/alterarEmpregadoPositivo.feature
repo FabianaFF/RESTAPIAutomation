@@ -12,5 +12,5 @@ Scenario Outline: Alterar empregado cadastrado
 	
 	Examples:
 	|campo|valor|
-	|nome| Fake name 4|
-	|cargo| Fake cargo 4|
+	|nome|Fake name 4|
+	|cargo|Fake cargo 4|
