@@ -13,10 +13,10 @@ import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features="src/test/resources/features/", 
-glue="br/com/inmetrics/teste/steps", 
+@CucumberOptions(features="src/test/resources/features/WEB", 
+glue="br/com/inmetrics/teste/steps/WEB", 
 monochrome = true, plugin={"pretty", "json:target/cucumber.json"})
-public class RunCucumberTest {
+public class RunCucumberTestWEB {
 
     @BeforeClass
     public static void setup() {

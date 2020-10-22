@@ -1,4 +1,4 @@
-package br.com.inmetrics.teste.steps;
+package br.com.inmetrics.teste.steps.API.empregado;
 
 import org.junit.Assert;
 

@@ -39,16 +39,14 @@ public class ListagemFuncionarios {
 	@CacheLookup
 	WebElement lista;
 	
-	WebElement primeiroEmpregadoLista;
 	WebElement editar;	
 	WebElement apagar;
 	
 	public void doSelecionaPrimeiroFuncionario() {
-		lista = driver.findElement(By.xpath("//table[@id=\"tabela\"]/tbody/tr[1]"));		
-		List<WebElement> el = lista.findElements(By.tagName("a"));
-		
-		apagar = lista.findElements(By.tagName("a")).get(0);
-		editar = lista.findElements(By.tagName("a")).get(1);
+		WebElement linhaPrimeiroUsuario = lista.findElement(By.xpath("//tbody/tr[1]"));		
+			
+		apagar = linhaPrimeiroUsuario.findElements(By.tagName("a")).get(0);
+		editar = linhaPrimeiroUsuario.findElements(By.tagName("a")).get(1);
 	}
 	
 	public void doEditarFuncionario() {

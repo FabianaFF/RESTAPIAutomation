@@ -1,4 +1,4 @@
-package br.com.inmetrics.teste.steps.ui.empregado;
+package br.com.inmetrics.teste.steps.WEB.empregado;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;

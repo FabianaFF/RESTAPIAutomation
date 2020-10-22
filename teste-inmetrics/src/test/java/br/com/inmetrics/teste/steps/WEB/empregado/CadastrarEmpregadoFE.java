@@ -1,4 +1,4 @@
-package br.com.inmetrics.teste.steps.ui.empregado;
+package br.com.inmetrics.teste.steps.WEB.empregado;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
@@ -42,13 +42,13 @@ public class CadastrarEmpregadoFE {
 	@Before()
 	public void before(Scenario scenario) {
 		this.scenario = scenario;
-		this.driver= BrowserFactory.getInstance().getDriver(ConfigManager.getInstance().getConfigs().get("defaultDriver"));		
+		this.driver= BrowserFactory.getInstance().getDriver(ConfigManager.getInstance().getConfigs().get("defaultDriver"));
+		driver.get(ConfigManager.getInstance().getConfigs().get("webBase"));
 		configureData();
 	}
 	
 	@Given("^Como usuário web cadastrado e logado com permissão de cadastro$")
-	public void realizaAcesso() {
-		driver.get(ConfigManager.getInstance().getConfigs().get("webBase"));
+	public void realizaAcesso() {		
 		Login loginPage =  PageFactory.initElements(driver, Login.class);
 		loginPage.doLogin(user, pass);	
 	}
@@ -69,7 +69,12 @@ public class CadastrarEmpregadoFE {
 	
 	@Then("^verifico que a criação de novo funcionário foi realizada com sucesso$")
 	public void validaCadastro() {
-		Assert.assertNotNull(driver.findElement(By.xpath("//div[contains(concat(' ',normalize-space(@class),' '),' alert-success ')]")));		
+		try {
+			Assert.assertNotNull(driver.findElement(By.xpath("//div[contains(concat(' ',normalize-space(@class),' '),' alert-success ')]")));
+		}catch(Exception ex) {
+			System.out.println("Driver Exception: "+ ex.getMessage());
+			new AssertionError("Cadastro não realizado com sucesso.");
+		}
 	}
 	
 	@After
