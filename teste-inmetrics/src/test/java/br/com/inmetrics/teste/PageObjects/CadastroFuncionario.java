@@ -7,14 +7,11 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
 
-import br.com.inmetrics.teste.support.BrowserFactory;
-import br.com.inmetrics.teste.support.ConfigManager;
-
-public class CadastroFuncionario {
-	WebDriver driver;
-	 
-	public CadastroFuncionario(WebDriver driver){
-		this.driver= BrowserFactory.getInstance().getDriver(ConfigManager.getInstance().getConfigs().get("defaultDriver"));
+public class CadastroFuncionario extends PageObject {
+	
+	public CadastroFuncionario(WebDriver driver) {
+		super(driver);
+		super.elementVisibility = "inputNome";
 	}
 
 	@FindBy(how=How.ID,using="inputNome")
@@ -107,4 +104,5 @@ public class CadastroFuncionario {
 	public void cancelar() {
 		cancelar.click();
 	}
+	
 }

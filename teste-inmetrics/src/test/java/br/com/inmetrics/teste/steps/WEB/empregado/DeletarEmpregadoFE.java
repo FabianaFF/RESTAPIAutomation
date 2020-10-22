@@ -1,11 +1,6 @@
 package br.com.inmetrics.teste.steps.WEB.empregado;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -14,27 +9,23 @@ import br.com.inmetrics.teste.PageObjects.Login;
 import br.com.inmetrics.teste.support.BrowserFactory;
 import br.com.inmetrics.teste.support.ConfigManager;
 import br.com.inmetrics.teste.support.YamlHelper;
-import cucumber.api.Scenario;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import junit.framework.Assert;
 
 public class DeletarEmpregadoFE {
 	
 	static String testData = "src/test/resources/data/test_data.yaml";
-	private Scenario scenario;
 	private ListagemFuncionarios listagemPage;
 	private WebDriver driver;	
 	private String pass;	
 	private String user;
 	
-	@Before()
-	public void before(Scenario scenario) {
-		this.scenario = scenario;
+	@Before("@DeletarEmpregadoFE")
+	public void before() {		
 		this.driver = BrowserFactory.getInstance().getDriver(ConfigManager.getInstance().getConfigs().get("defaultDriver"));
 		this.driver.get(ConfigManager.getInstance().getConfigs().get("webBase"));
 		configureData();
@@ -42,14 +33,15 @@ public class DeletarEmpregadoFE {
 	
 	@Given("^Como usuário web cadastrado e logado com permissão de deleção$")
 	public void realizaAcesso() {		
-		Login loginPage =  (Login) PageFactory.initElements(this.driver, Login.class);
-		loginPage.doLogin(user, pass);	
+		Login loginPage = new Login(this.driver);
+		loginPage.waitForPageLoaded();
+		loginPage.doLogin(user, pass);
 	}
 	
 	@When("^ao selecionar funcionário para deletar na listagem$")
-	public void selecionarEmpregado() {		
-		Assert.assertEquals(this.driver.getCurrentUrl(), "http://www.inmrobo.tk/empregados/");
-		listagemPage = PageFactory.initElements(this.driver, ListagemFuncionarios.class);
+	public void selecionarEmpregado() {
+		listagemPage = new ListagemFuncionarios(this.driver);
+		listagemPage.waitForPageLoaded();
 		listagemPage.doSelecionaPrimeiroFuncionario();
 	}
 	
@@ -61,27 +53,15 @@ public class DeletarEmpregadoFE {
 	@Then("^verifico que a deleção de funcionário foi realizada com sucesso$")
 	public void validaDelecao() {
 		try {
-			driver.findElement(By.xpath("//div[contains(concat(' ',normalize-space(@class),' '),' alert-success ')]"));
-		}catch(NoSuchElementException ex) {
-			System.out.println("Driver Exception: "+ ex.getMessage());
+			ListagemFuncionarios listagemPage = new ListagemFuncionarios(this.driver);
+			listagemPage.waitForPageLoaded();
+			Assert.assertTrue(listagemPage.getStatusAtualizacao().contains("Funcionário removido com sucesso"));
+		}catch(Exception ex) {
+			System.out.println("===== Exception ====\n" + ex.getMessage());
 			new AssertionError("Funcionário não deletado com sucesso.");
-		}		
-		generateEvidence();
+		}
 	}
-	
-	@After()
-	public void tearDown()
-	{
-		if(driver != null)
-			driver.quit();
-	}
-	
-	private void generateEvidence() {
-		//Salvando screenshot no report
-		byte[] image = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
-		this.scenario.embed(image, "image/png");
-	}
-	
+		
 	public void configureData() {
 		JsonNode newLoginInfo = YamlHelper.getInstance().convertYamlToNode(testData, "loginDTO");		
 		user = newLoginInfo.get("email").asText();

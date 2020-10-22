@@ -7,16 +7,17 @@ import com.fasterxml.jackson.databind.JsonNode;
 import br.com.inmetrics.teste.support.ConfigManager;
 import br.com.inmetrics.teste.support.CustomLogFilter;
 import br.com.inmetrics.teste.support.YamlHelper;
-import cucumber.api.Scenario;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+
 
 public class cadastrarEmpregado {
 
@@ -66,7 +67,7 @@ public class cadastrarEmpregado {
 		response = request.post("/empregado/cadastrar");
 
 		//Logging request and response at report using custom filter
-		scenario.write("\n  API request:" + filter.getRequestBuilder() +
+		scenario.log("\n  API request:" + filter.getRequestBuilder() +
 				"\n  API response:" + filter.getResponseBuilder());
 	}
 

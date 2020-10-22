@@ -25,27 +25,27 @@ public class BrowserFactory {
 	 
 	
 	public WebDriver getChromeDriver(){
-		if(driver==null){
-			System.setProperty("webdriver.chrome.driver", ConfigManager.getInstance().getConfigs().get("chromeDriverPath"));
-			
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--disable-notifications");
-			options.addArguments("start-maximized"); 
-			options.addArguments("enable-automation"); 
-			options.addArguments("--no-sandbox"); 
-			options.addArguments("--disable-infobars");
-			options.addArguments("--disable-dev-shm-usage");
-			options.addArguments("--disable-browser-side-navigation"); 
-			options.addArguments("--disable-gpu"); 
-			options.setPageLoadStrategy(PageLoadStrategy.NONE);			
-			
-			driver = new ChromeDriver(options);			
-			driver.manage().window().maximize();
-			driver.manage().deleteAllCookies();
-			driver.manage().timeouts().implicitlyWait(45, TimeUnit.SECONDS);
-			driver.manage().timeouts().pageLoadTimeout(45, TimeUnit.SECONDS);
-			
-		}
+		System.out.println("====== configurando driver ======");
+		
+		System.setProperty("webdriver.chrome.driver", ConfigManager.getInstance().getConfigs().get("chromeDriverPath"));
+		
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments("--disable-notifications");
+		options.addArguments("start-maximized"); 
+		options.addArguments("enable-automation"); 
+		options.addArguments("--no-sandbox"); 
+		options.addArguments("--disable-infobars");
+		options.addArguments("--disable-dev-shm-usage");
+		options.addArguments("--disable-browser-side-navigation"); 
+		options.addArguments("--disable-gpu"); 
+		options.setPageLoadStrategy(PageLoadStrategy.NONE);			
+		
+		driver = new ChromeDriver(options);			
+		driver.manage().window().maximize();
+		driver.manage().deleteAllCookies();
+		driver.manage().timeouts().implicitlyWait(45, TimeUnit.SECONDS);
+		driver.manage().timeouts().pageLoadTimeout(45, TimeUnit.SECONDS);
+		
 		return driver;
 	}
 	 
@@ -60,7 +60,9 @@ public class BrowserFactory {
 	}
 	
 	public  WebDriver getDriver(String browserName){
+		
 		if(driver==null){
+			
 			
 			if(browserName.equalsIgnoreCase("firefox"))
 			{
@@ -74,7 +76,7 @@ public class BrowserFactory {
 			{
 				driver= getIEDriver();	
 			}
-			
+						
 		}
 		return driver;
 	}

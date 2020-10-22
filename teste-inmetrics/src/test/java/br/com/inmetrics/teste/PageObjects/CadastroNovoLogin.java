@@ -1,21 +1,20 @@
 package br.com.inmetrics.teste.PageObjects;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import br.com.inmetrics.teste.support.BrowserFactory;
-import br.com.inmetrics.teste.support.ConfigManager;
-
-public class CadastroNovoLogin {
-	WebDriver driver;
-	 
-	public CadastroNovoLogin(WebDriver driver){
-		this.driver= BrowserFactory.getInstance().getDriver(ConfigManager.getInstance().getConfigs().get("defaultDriver"));
+public class CadastroNovoLogin extends PageObject{
+		
+	public CadastroNovoLogin(WebDriver driver) {
+		super(driver);		
 	}
-	
+
 	@FindBy(how=How.NAME,using="username")
 	@CacheLookup
 	WebElement username;
@@ -37,5 +36,12 @@ public class CadastroNovoLogin {
 		password.sendKeys(pass);
 		confirmPassword.sendKeys(confirmationPass);
 		login.click();
+	}
+	
+	@Override
+	public void waitForPageLoaded() {
+		System.out.println("==== Aguardando página ser renderizada =======");
+		WebDriverWait wait = new WebDriverWait(driver, 15);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("username")));
 	}
 }

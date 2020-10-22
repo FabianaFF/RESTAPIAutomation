@@ -1,20 +1,20 @@
 package br.com.inmetrics.teste.PageObjects;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import br.com.inmetrics.teste.support.BrowserFactory;
-import br.com.inmetrics.teste.support.ConfigManager;
-
-public class EdicaoFuncionario {
-	WebDriver driver;
-	 
-	public EdicaoFuncionario(WebDriver driver){
-		this.driver= BrowserFactory.getInstance().getDriver(ConfigManager.getInstance().getConfigs().get("defaultDriver"));
+public class EdicaoFuncionario extends PageObject{
+	
+	public EdicaoFuncionario(WebDriver driver) {
+		super(driver);
+		super.elementVisibility = "inputNome";
 	}
 
 	@FindBy(how=How.ID,using="inputNome")
@@ -84,7 +84,8 @@ public class EdicaoFuncionario {
 			default: break;				
 		}
 		
-		if(info == "tipoContratacao") {
+		if(info.equals("tipoContratacao")) {
+			
 			switch(value) {			
 				case "pj":
 					pj.click();
@@ -98,27 +99,27 @@ public class EdicaoFuncionario {
 			}
 		}
 		
-		if(info == "sexo") {
+		if(info.equals("sexo")) {
 			comboSexoSelect = new Select(comboSexo);
 			comboSexo.click();
 			
 			switch(value) {
 				case "f" :
-					comboSexoSelect.selectByIndex(2);				
+					comboSexoSelect.selectByVisibleText("Feminino");				
 					break;
 					
 				case "m" :
-					comboSexoSelect.selectByIndex(3);
+					comboSexoSelect.selectByVisibleText("Masculino");
 					break;	
 				
 				case "-" :
-					comboSexoSelect.selectByIndex(1);
+					comboSexoSelect.selectByVisibleText("Indiferente");
 					break;
 				
 				default:
 					break;				
 			}
-		}		
+		}
 	}
 	
 	public void enviar() {
@@ -128,4 +129,60 @@ public class EdicaoFuncionario {
 	public void cancelar() {
 		cancelar.click();
 	}
+	
+	public String getFieldValue(String field) {
+		String value = "";
+	
+		switch (field) {
+			case "nome":		
+				value = this.nome.getAttribute("value");
+				break;
+			case "cpf":			
+				value = this.cpf.getAttribute("value");
+				break;
+			case "cargo":			
+				value = this.cargo.getAttribute("value");
+				break;
+			case "admissao":
+				value = this.cargo.getAttribute("value");
+				break;			
+			case "salario":
+				value = this.salario.getAttribute("value");
+				break;				
+			default: break;				
+		}
+	
+		if(field.equals("tipoContratacao")) {
+			if(pj.isSelected())
+				value = "pj";
+			
+			if(clt.isSelected())
+				value = "clt";
+		}
+	
+		if(field.equals("sexo")) {
+			comboSexoSelect = new Select(comboSexo);
+			String sexo = comboSexoSelect.getFirstSelectedOption().getText();
+
+			switch(sexo) {
+				case "Feminino" :
+					value = "f";		
+					break;
+					
+				case "Masculino" :
+					value = "m";
+					break;	
+				
+				case "Indiferente" :
+					value = "-";
+					break;
+				
+				default:
+					break;				
+			}
+		}
+		
+		return value;
+	}
+	
 }

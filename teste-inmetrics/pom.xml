@@ -11,7 +11,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<cucumber.version>4.2.0</cucumber.version>		
+		<cucumber.version>6.8.1</cucumber.version>
+		<junit.version>4.13</junit.version>	
 		<maven-cucumber-reporting-version>5.3.0</maven-cucumber-reporting-version>
 		<jackson-dataformat-yaml-version>2.1.2</jackson-dataformat-yaml-version>
 		<snakeyaml-version>1.21</snakeyaml-version>
@@ -39,6 +40,12 @@
             <version>${cucumber.version}</version>
         </dependency>
         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
 		    <groupId>net.masterthought</groupId>
 		    <artifactId>maven-cucumber-reporting</artifactId>
 		    <version>${maven-cucumber-reporting-version}</version>
@@ -48,13 +55,7 @@
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
             <version>${cucumber.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
+        </dependency>      
         <!-- Jackson JSON Processor -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

@@ -1,24 +1,20 @@
 package br.com.inmetrics.teste.PageObjects;
 
-import java.util.List;
-
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import br.com.inmetrics.teste.support.BrowserFactory;
-import br.com.inmetrics.teste.support.ConfigManager;
-
-public class ListagemFuncionarios {
-	WebDriver driver;
-	 
-	public ListagemFuncionarios(WebDriver driver){
-		this.driver= BrowserFactory.getInstance().getDriver(ConfigManager.getInstance().getConfigs().get("defaultDriver"));
-	}
+public class ListagemFuncionarios extends PageObject{
 	
+	public ListagemFuncionarios(WebDriver driver) {
+		super(driver);
+		super.elementVisibility = "tabela";
+	}
+
 	@FindBy(how=How.LINK_TEXT,using="FUNCIONÁRIOS")
 	@CacheLookup
 	WebElement funcionarios;
@@ -30,7 +26,7 @@ public class ListagemFuncionarios {
 	@FindBy(how=How.LINK_TEXT,using="SAIR")
 	@CacheLookup
 	WebElement sair;
-		
+
 	//@FindBy(how=How.XPATH,using="//*[@id=\"tabela_filter\"]/label/input")
 	//@CacheLookup
 	//WebElement presquisar;
@@ -64,4 +60,18 @@ public class ListagemFuncionarios {
 	public void doLogout() {
 		sair.click();
 	}
+	
+	public String getStatusAtualizacao() {
+				
+		String statusAtualizacao = "";
+		try {
+			WebElement status = driver.findElement(By.xpath("//div[@class='container-message']/div"));
+			statusAtualizacao = status.getText().trim();			
+			System.out.println("statusAtualizacao:" + statusAtualizacao);
+		}catch(NoSuchElementException ex) {
+			System.out.println("============= ELEMENTO NÃO ENCONTRADO ==============");
+		}
+		return statusAtualizacao;
+	}
+	
 }

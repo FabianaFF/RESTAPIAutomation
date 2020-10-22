@@ -1,11 +1,6 @@
 package br.com.inmetrics.teste.steps.WEB.empregado;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -14,77 +9,82 @@ import br.com.inmetrics.teste.PageObjects.ListagemFuncionarios;
 import br.com.inmetrics.teste.PageObjects.Login;
 import br.com.inmetrics.teste.support.BrowserFactory;
 import br.com.inmetrics.teste.support.ConfigManager;
-import br.com.inmetrics.teste.support.EvidencesHelper;
 import br.com.inmetrics.teste.support.YamlHelper;
-import cucumber.api.Scenario;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import junit.framework.Assert;
 
 public class AlterarEmpregadoFE {
 	
 	static String testData = "src/test/resources/data/test_data.yaml";
-	private Scenario scenario;
-	private ListagemFuncionarios listagemPage;
-	private EdicaoFuncionario edicaoPage;
 	private WebDriver driver;	
 	private String pass;	
 	private String user;
+	private String idUser;
+	private String dado;
+	private String valor;
+	private String urlEdit;
 	
-	@Before()
-	public void before(Scenario scenario) {
-		this.scenario = scenario;
+	@Before("@AlterarEmpregadoFE")
+	public void before() {		
 		this.driver = BrowserFactory.getInstance().getDriver(ConfigManager.getInstance().getConfigs().get("defaultDriver"));
 		this.driver.get(ConfigManager.getInstance().getConfigs().get("webBase"));
 		configureData();
 	}
-	
+			
 	@Given("^Como usuário web cadastrado e logado com permissão de alteração$")
-	public void realizaAcesso() {		
-		Login loginPage =  PageFactory.initElements(this.driver, Login.class);
-		loginPage.doLogin(user, pass);	
+	public void realizaAcesso() {				
+		Login loginPage = new Login(this.driver);
+		loginPage.waitForPageLoaded();
+		loginPage.doLogin(user, pass);		
 	}
 	
 	@When("^ao selecionar funcionário para alterar na listagem$")
 	public void selecionarEmpregado() {		
-		listagemPage = PageFactory.initElements(this.driver, ListagemFuncionarios.class);
+		ListagemFuncionarios listagemPage = new ListagemFuncionarios(this.driver);
+		listagemPage.waitForPageLoaded();
 		listagemPage.doSelecionaPrimeiroFuncionario();
 		listagemPage.doEditarFuncionario();
 	}
 	
-	@And("^enviar as alterações de dados do empregado$")
-	public void alterarEmpregado() {		
-		EdicaoFuncionario edicaoPage = PageFactory.initElements(this.driver, EdicaoFuncionario.class);
-		edicaoPage.doAlterar("nome", "nomeUPD");
+	@And("^enviar '(.*)' alterado para '(.*)'$")
+	public void alterarEmpregado(String dado, String valor) {
+		this.dado = dado;
+		this.valor = valor;
+		int index = this.driver.getCurrentUrl().indexOf("/edit/");		
+		idUser = this.driver.getCurrentUrl().substring(index + 6).trim();
+		urlEdit = "http://www.inmrobo.tk/empregados/edit/"+idUser;
+		
+		Assert.assertEquals(this.driver.getCurrentUrl(), urlEdit);	
+						
+		EdicaoFuncionario edicaoPage = new EdicaoFuncionario(this.driver);
+		edicaoPage.waitForPageLoaded();
+		edicaoPage.doAlterar(dado, valor);
 		edicaoPage.enviar();		
 	}
 	
 	@Then("^verifico que a alteração de funcionário foi realizada com sucesso$")
 	public void validaAlteracao() {
-		try {
-			driver.findElement(By.xpath("//div[contains(concat(' ',normalize-space(@class),' '),' alert-success ')]"));
-		}catch(NoSuchElementException ex) {
-			System.out.println("Driver Exception: "+ ex.getMessage());
-			new AssertionError("Funcionário não alterado com sucesso.");
-		}		
-		generateEvidence();
-	}
-	
-	@After()
-	public void tearDown()
-	{
-		if(driver != null)
-			driver.quit();
-	}
-	
-	private void generateEvidence() {
-		//Salvando screenshot no report
-		byte[] image = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
-		this.scenario.embed(image, "image/png");
+		try{
+			//Validando se não houve erro ao salvar
+			ListagemFuncionarios listagemPage = new ListagemFuncionarios(this.driver);
+			listagemPage.waitForPageLoaded();
+			Assert.assertTrue(
+					listagemPage.getStatusAtualizacao().
+					contains("Informações atualizadas com sucesso"));
+			
+			driver.get(urlEdit);
+			
+			//Validando se os valores foram realmemte persistidos
+			EdicaoFuncionario edicaoPage = new EdicaoFuncionario(this.driver);
+			Assert.assertEquals(edicaoPage.getFieldValue(dado), valor);
+		}catch(Exception ex) {
+			System.out.println("===== Exception ====\n" + ex.getMessage());
+			new AssertionError("Alteração não realizada com sucesso.");
+		}
 	}
 	
 	private void configureData() {
