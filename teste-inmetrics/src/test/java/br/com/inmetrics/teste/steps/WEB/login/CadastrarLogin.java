@@ -1,5 +1,7 @@
 package br.com.inmetrics.teste.steps.WEB.login;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -55,17 +57,21 @@ public class CadastrarLogin {
 	@Then("^quero ter meu cadastro realizado com sucesso$")
 	public void validarCadastro() {
 		//Apos cadastro é realizado o redirecionamento a tela de login
-		Assert.assertEquals(driver.getCurrentUrl(), "http://www.inmrobo.tk/accounts/login/");		
+		Assert.assertEquals(driver.getCurrentUrl(), "http://www.inmrobo.tk/accounts/login/");
+		generateEvidence();
 	}
 	
-	@After
+	@After()
 	public void tearDown()
 	{
+		if(driver != null)
+			driver.quit();
+	}
+	
+	private void generateEvidence() {
 		//Salvando screenshot no report
 		byte[] image = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
 		this.scenario.embed(image, "image/png");
-		
-		driver.quit();
 	}
 	
 	private void configureData() {

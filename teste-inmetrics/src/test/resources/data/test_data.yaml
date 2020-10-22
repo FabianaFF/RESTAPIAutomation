@@ -38,7 +38,7 @@ empregadoDTO4:
   admissao: "10/11/2020"
   cargo: "Analista II"
   comissao: "00,00"
-  cpf: "83753429805"
+  cpf: "837.534.298-05"
   departamentoId: 1012
   nome: "Fake user 4"
   salario: "6.006,00"

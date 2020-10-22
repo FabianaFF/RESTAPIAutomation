@@ -1,6 +1,7 @@
 package br.com.inmetrics.teste.steps.WEB.empregado;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -59,17 +60,26 @@ public class DeletarEmpregadoFE {
 	
 	@Then("^verifico que a deleção de funcionário foi realizada com sucesso$")
 	public void validaDelecao() {
-		Assert.assertNotNull(this.driver.findElement(By.xpath("//div[contains(concat(' ',normalize-space(@class),' '),' alert-success ')]")));		
+		try {
+			driver.findElement(By.xpath("//div[contains(concat(' ',normalize-space(@class),' '),' alert-success ')]"));
+		}catch(NoSuchElementException ex) {
+			System.out.println("Driver Exception: "+ ex.getMessage());
+			new AssertionError("Funcionário não deletado com sucesso.");
+		}		
+		generateEvidence();
 	}
 	
-	@After
+	@After()
 	public void tearDown()
 	{
+		if(driver != null)
+			driver.quit();
+	}
+	
+	private void generateEvidence() {
 		//Salvando screenshot no report
-		byte[] image = ((TakesScreenshot)this.driver).getScreenshotAs(OutputType.BYTES);
+		byte[] image = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
 		this.scenario.embed(image, "image/png");
-		
-		this.driver.quit();
 	}
 	
 	public void configureData() {

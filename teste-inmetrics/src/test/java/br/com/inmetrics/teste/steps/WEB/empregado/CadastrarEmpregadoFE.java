@@ -1,6 +1,7 @@
 package br.com.inmetrics.teste.steps.WEB.empregado;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -22,6 +23,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import junit.framework.Assert;
+
 
 public class CadastrarEmpregadoFE {
 	
@@ -70,21 +72,25 @@ public class CadastrarEmpregadoFE {
 	@Then("^verifico que a criação de novo funcionário foi realizada com sucesso$")
 	public void validaCadastro() {
 		try {
-			Assert.assertNotNull(driver.findElement(By.xpath("//div[contains(concat(' ',normalize-space(@class),' '),' alert-success ')]")));
-		}catch(Exception ex) {
+			driver.findElement(By.xpath("//div[contains(concat(' ',normalize-space(@class),' '),' alert-success ')]"));
+		}catch(NoSuchElementException ex) {
 			System.out.println("Driver Exception: "+ ex.getMessage());
 			new AssertionError("Cadastro não realizado com sucesso.");
 		}
+		generateEvidence();
 	}
 	
-	@After
+	@After()
 	public void tearDown()
 	{
+		if(driver != null)
+			driver.quit();
+	}
+	
+	private void generateEvidence() {
 		//Salvando screenshot no report
 		byte[] image = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
 		this.scenario.embed(image, "image/png");
-		
-		driver.quit();
 	}
 	
 	private void configureData() {
@@ -96,8 +102,7 @@ public class CadastrarEmpregadoFE {
 		nome = newEmpregadoInfo.get("nome").asText();
 		cargo = newEmpregadoInfo.get("cargo").asText();
 		admissao = newEmpregadoInfo.get("admissao").asText();
-		//cpf = newEmpregadoInfo.get("cpf").asText();
-		cpf = "83753429805";
+		cpf = newEmpregadoInfo.get("cpf").asText();		
 		salario = newEmpregadoInfo.get("salario").asText();
 		tipoContratacao = newEmpregadoInfo.get("tipoContratacao").asText() ;
 		sexo = newEmpregadoInfo.get("sexo").asText();

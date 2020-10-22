@@ -1,5 +1,7 @@
 package br.com.inmetrics.teste.steps.WEB.login;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -49,16 +51,26 @@ public class RealizarLogin {
 	
 	@Then("^quero ter meu login realizado com sucesso$")
 	public void validaAcesso() {
-		Assert.assertEquals(driver.getCurrentUrl(), "http://www.inmrobo.tk/empregados/");		
+		try {
+			driver.findElement(By.xpath("//div[contains(concat(' ',normalize-space(@class),' '),' alert-success ')]"));
+		}catch(NoSuchElementException ex) {
+			System.out.println("Driver Exception: "+ ex.getMessage());
+			new AssertionError("Acesso não realizado com sucesso.");
+		}		
+		generateEvidence();
 	}
 	
-	@After
+	@After()
 	public void tearDown()
 	{
+		if(driver != null)
+			driver.quit();
+	}
+	
+	private void generateEvidence() {
 		//Salvando screenshot no report
 		byte[] image = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
 		this.scenario.embed(image, "image/png");
-		driver.quit();
 	}
 	
 	private void configureData() {
